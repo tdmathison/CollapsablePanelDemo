@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script type="text/javascript" src="jquery-3.6.0.min.js"></script>
+    </head>
+    <style>
+        body {
+            background-color: #222222;
+            color: #f9f9f9;
+            font-family: monospace;
+            font-size: medium;
+        }
+        a:link, a:visited {
+            color:#ab7939;
+        }
+        a:hover {
+            color:#e3ba85;
+        }
+        .expand-link, .expand-link:visited {
+            cursor: pointer;
+            color:#ab7939
+        }
+        .expand-link:hover {
+            color:#e3ba85;
+        }
+        .searchable {
+
+        }
+        .expand-all {
+
+        }
+        .section, .section:link {
+            text-decoration: none;
+            font-weight: bold;
+            font-size: medium;
+        }
+        .rTable {
+            display: table;
+            width: 100%;
+        }
+        .rTableRow {
+            display: table-row;
+        }
+        .rTableCell {
+            display: table-cell;
+            white-space: nowrap;
+            padding: 3px 5px;
+            border: 0px;
+        }
+        .rTableCellShort {
+            width: 1px;
+        }
+        .rTableBody {
+            display: table-row-group;
+        }
+        .container {
+            
+            border:1px solid #d3d3d3;
+        }
+        .container div {
+            width:595;
+        }
+        .container .header {
+            background-color:#222222;
+            padding: 5px 0px 5px 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .container .content {
+            display: none;
+            padding : 5px;
+        }
+        .noresults {
+            color: #f3f4f5;
+        }
+
+        .results {
+            background: #eccd68;
+            color: #161515;
+        }
+
+        .results:hover {
+            background: #f8e4a2;
+            color: #161515;
+        }
+        .on-page-search {
+            background-color: #222222;
+            border-style: none;
+            color:#f9f9f9;
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+            $("#search").focus();
+
+            $(".header").click(function () {
+                $header = $(this);
+                $content = $header.next();
+                if ($content.is(":visible")) {
+                    closeSection($header)
+                } else {
+                    openSection($header)
+                }
+            });
+
+            function openSection(elem) {
+                $content = elem.next();
+                if ($content.is(":hidden")) {
+                    $content.slideToggle(200, function () {
+                        elem.text("[-] " + elem[0].id);
+                    });
+                }
+            }
+
+            function closeSection(elem) {
+                $content = elem.next();
+                if ($content.is(":visible")) {
+                    $content.slideToggle(200, function () {
+                        elem.text("[+] " + elem[0].id);
+                    });
+                }
+            }
+
+            $(".on-page-search").on("keyup", function() {
+                var v = $(this).val();
+                $(".results").removeClass("results");
+                $(".noresults").removeClass("noresults");
+            
+                if (v.trim() == "") {
+                    $("div.header").each(function(index, value) {
+                        closeSection($(value))
+                    });
+
+                    return;
+                }
+
+                $("div.searchable").each(function() {
+                    if (v != "" && $(this).text().search(new RegExp(v, 'gi')) != -1) {
+                        $(this).addClass("results");
+                        ($(this).closest("div[class^='content']")).show()
+                    } else if (v != "" && $(this).text().search(v) != 1) {
+                        $(this).addClass("noresults");
+                    }
+                });
+
+                $("div.content").each(function() {
+                    if ($(this).find('.results').length == 0) {
+                        $(this).hide();
+                    }
+                });
+            });
+
+            $("#expand-all").on("click", function() {
+                $("div.header").each(function(index, value) {
+                    openSection($(value))
+                });
+            });
+
+        });
+    </script>
+    <body>
+        <div>
+            <pre>
+XYZ
+            </pre>
+            <hr /><br/>
+        </div>
+
+        <div style="font-size: large;">tm876w@grt:~$ <input id="search" class="on-page-search" /></div><br/>
+
+        <div class="container">
+            <div class="header headerGeneralLinks" id="GENERAL LINKS"><span>[+] SECTION 1</span></div>
+            <div class="content">                                                                                 
+                <div class="rTable">
+                    <div class="rTableRow">
+                        <div class="rTableCell rTableCellShort"><div style="color:#f9f9f9">&#9632;</div></div>
+                        <div class="rTableCell rTableCellShort searchable"><a href="">X1</a></div>
+                        <div class="rTableCell searchable">Description</div>
+                    </div>
+                    <div class="rTableRow">
+                        <div class="rTableCell rTableCellShort"><div style="color:#f9f9f9">&#9632;</div></div>
+                        <div class="rTableCell rTableCellShort searchable"><a href="">Y1</a></div>
+                        <div class="rTableCell searchable">Description</div>
+                    </div>
+                    <div class="rTableRow">
+                        <div class="rTableCell rTableCellShort"><div style="color:#f9f9f9">&#9632;</div></div>
+                        <div class="rTableCell rTableCellShort searchable"><a href="">Z1</a></div>
+                        <div class="rTableCell searchable">Description</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br/>
+
+        <div class="container">
+            <div class="header headerGeneralLinks" id="ADMINISTRATIVE LINKS"><span>[+] SECTION 2</span></div>
+            <div class="content">                                                                                 
+                <div class="rTable">
+                    <div class="rTableRow">
+                        <div class="rTableCell rTableCellShort"><div style="color:#f9f9f9">&#9632;</div></div>
+                        <div class="rTableCell rTableCellShort searchable"><a href="">X2</a></div>
+                        <div class="rTableCell searchable">Description</div>
+                    </div>
+                    <div class="rTableRow">
+                        <div class="rTableCell rTableCellShort"><div style="color:#f9f9f9">&#9632;</div></div>
+                        <div class="rTableCell rTableCellShort searchable"><a href="">Y2</a></div>
+                        <div class="rTableCell searchable">Description</div>
+                    </div>
+                    <div class="rTableRow">
+                        <div class="rTableCell rTableCellShort"><div style="color:#f9f9f9">&#9632;</div></div>
+                        <div class="rTableCell rTableCellShort searchable"><a href="">Z2</a></div>
+                        <div class="rTableCell searchable">Description</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
